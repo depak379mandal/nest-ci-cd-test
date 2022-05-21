@@ -22,13 +22,6 @@ services:
       - ${MAIL_CLIENT_PORT}:1080
       - ${MAIL_PORT}:1025
 
-  adminer:
-    container_name: decommerce_adminer
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
-
   redis:
     container_name: decommerce_redis
     image: redis:6-alpine
@@ -46,4 +39,3 @@ services:
       - ${APP_PORT}:${APP_PORT}
     depends_on:
       - postgres
-    command: npm run start:dev
