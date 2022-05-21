@@ -34,7 +34,7 @@ services:
     container_name: decommerce_api
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.e2e
     ports:
       - ${APP_PORT}:${APP_PORT}
     depends_on:
