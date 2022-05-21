@@ -4,12 +4,11 @@ RUN npm i -g npm@latest
 WORKDIR /usr/src/app
 
 RUN npm i -g @nestjs/cli typescript ts-node
-COPY package*.json .
+COPY package*.json ./
 
 RUN npm install
 
 COPY . .
-ADD ./env-example ./.env
 
 COPY ./wait-for-it.sh /opt/wait-for-it.sh
 COPY ./startup.dev.sh /opt/startup.dev.sh
