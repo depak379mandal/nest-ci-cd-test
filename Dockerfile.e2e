@@ -12,8 +12,6 @@ COPY . .
 
 COPY ./wait-for-it.sh /opt/wait-for-it.sh
 COPY ./startup.dev.sh /opt/startup.dev.sh
-
-RUN npm run build
 COPY ./env-example ./.env
 
 CMD ["/bin/bash", "/opt/startup.dev.sh"]
