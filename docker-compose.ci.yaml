@@ -39,14 +39,4 @@ services:
       - ${APP_PORT}:${APP_PORT}
     depends_on:
       - postgres
-    command: 
-      - npm
-      - run
-      - migration:run
-      - "&&"
-      - npm
-      - test
-      - "&&"
-      - npm
-      - run
-      - test:e2e
+    command: bash -c "npm run migration:run && npm run test && npm run test:e2e"
