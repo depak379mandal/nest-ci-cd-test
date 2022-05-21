@@ -2,32 +2,52 @@ version: '3'
 
 services:
   postgres:
-    image: postgres:14.2
-    expose:
-      - 5432
+    container_name: decommerce_postgres
+    build: 
+      context: .
+      dockerfile: Dockerfile.postgres
+    ports:
+      - ${DATABASE_PORT}:5432
+    volumes:
+      - ./.data/db:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_MULTIPLE_DATABASES: ${DATABASE_NAME},${TEST_DATABASE_NAME}
 
   maildev:
+    container_name: decommerce_maildev
     build:
       context: .
       dockerfile: Dockerfile.maildev
-    expose:
-      - 1080
-      - 1025
+    ports:
+      - ${MAIL_CLIENT_PORT}:1080
+      - ${MAIL_PORT}:1025
+
+  adminer:
+    container_name: decommerce_adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 
   redis:
-    image: redis:7-alpine
-    expose:
-      - 6379
+    container_name: decommerce_redis
+    image: redis:6-alpine
+    ports:
+      - 6379:6379
     depends_on:
       - postgres
 
   api:
+    container_name: decommerce_api
     build:
       context: .
-      dockerfile: Dockerfile.e2e
+      dockerfile: Dockerfile
+    ports:
+      - ${APP_PORT}:${APP_PORT}
     depends_on:
       - postgres
+    volumes:
+      - .:/usr/src/app
+    command: npm run start:dev
